@@ -3,7 +3,7 @@ import requests
 
 # An api key is emailed to you when you sign up to a plan
 # Get a free API key at https://api.the-odds-api.com/
-API_KEY = 'd3cdb0be7aba76409fb0b186bdb2692d'
+API_KEY = ''
 
 SPORT = 'upcoming' # use the sport_key from the /sports endpoint below, or use 'upcoming' to see the next 8 games across all sports
 
