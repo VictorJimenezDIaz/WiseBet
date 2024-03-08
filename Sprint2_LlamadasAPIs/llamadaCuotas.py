@@ -1,9 +1,15 @@
+from flask import Flask, jsonify, render_template
 import requests
+import json
 
+def load_api_key():
+    with open('configCuo.json', 'r') as config_file:
+        config = json.load(config_file)
+        return config.get('api_key', None)
 
 # An api key is emailed to you when you sign up to a plan
 # Get a free API key at https://api.the-odds-api.com/
-API_KEY = ''
+API_KEY = load_api_key()
 
 SPORT = 'upcoming' # use the sport_key from the /sports endpoint below, or use 'upcoming' to see the next 8 games across all sports
 
@@ -35,17 +41,6 @@ if sports_response.status_code != 200:
 
 else:
     print('List of in season sports:', sports_response.json())
-
-
-
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#
-# Now get a list of live & upcoming games for the sport you want, along with odds for different bookmakers
-# This will deduct from the usage quota
-# The usage quota cost = [number of markets specified] x [number of regions specified]
-# For examples of usage quota costs, see https://the-odds-api.com/liveapi/guides/v4/#usage-quota-costs
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 odds_response = requests.get(
     f'https://api.the-odds-api.com/v4/sports/{SPORT}/odds',
