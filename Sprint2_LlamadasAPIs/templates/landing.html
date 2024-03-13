@@ -10,6 +10,7 @@
         body {
             margin: 0;
             font-family: 'Roboto', sans-serif;
+            
         }
         
         .header {
@@ -72,17 +73,83 @@
         .header nav .iniciar-sesion {
             font-weight: 700; /* Bold weight for Roboto */
             padding: 8px 16px;
-            border: 2px solid black;
+            border: 2px solid white;
             box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
             border-radius: 4px;
+        }
+
+        .header nav .call-to-action:hover{
+            background-color: #e600e6;
         }
         .header nav .inicia-sesion:hover {
             background-color: #e600e6; /* Darker shade when hovered */
         }
-        /*
-        .header nav .quienes-somos {
+        
+        .background-image {
+            position: absolute; /* Establece como relativo para que el contenido se sitúe encima */
+            opacity: 0.1; /* Opacidad al 40% */
+            background: url('{{ url_for('static', filename='sources/banner2.jpg') }}') no-repeat center center; 
+            background-size: cover; /* Asegura que la imagen de fondo cubra todo el div */
+            height: calc(100% - 50px); /* Resta la altura del header si es necesario */
+            width: 100%;
+            z-index: -1; /* Coloca la imagen de fondo detrás del contenido */
+        } 
+
+        .call-to-action {
+            text-align: center; /* Centra el texto horizontalmente */
+            position: absolute; /* Posicionamiento absoluto con respecto al contenedor relativo */
+            top: 12%; /* Posición desde la parte superior de la ventana */
+            left: 50%; /* Posición desde el lado izquierdo de la ventana */
+            transform: translate(-50%, -50%); /* Centra exactamente el elemento */
+            text-align: center;
+            color: #F52FC7;
+            width: 100%; /* Ancho completo para asegurar la centralización del texto */
+            font-size: 20px; /* Tamaño de la fuente del texto de llamado a acción */
+            z-index: 2;
+            background-color: white;
+
             font-weight: 700; /* Bold weight for Roboto */
-        }*/
+            padding: 8px 16px;
+            border: 2px solid #F52FC7;
+            
+            border-radius: 4px;
+        }
+
+        .fixtures-table {
+            width: auto;
+            margin-top: 100px; /* O el espacio que necesites */
+            border-collapse: collapse;
+            background-color: white;
+            margin-left: 210px;
+
+        }
+
+        .fixtures-table th,
+        .fixtures-table td {
+            padding: 10px;
+            border: 1px solid #ddd; /* Bordes sutiles para las celdas de la tabla */
+        }
+
+        .fixtures-table th {
+            background-color: rgba(0, 0, 0, 0.2); /* Fondo ligeramente más oscuro para los encabezados */
+            color: white;
+        }
+
+        .fixtures-table img {
+            height: 30px; /* Ajusta al tamaño que necesites */
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        
+        .table-container {
+                background-color: rgba(255, 255, 255, 0.8); /* Fondo de la tabla */
+                padding: 20px; /* Espacio alrededor de la tabla */
+                margin-left: 120px; /* Separación del margen izquierdo */
+                margin-top: 110px; /* Separación del header */
+        
+        }
+
+        
         
     </style>
 </head>
@@ -104,5 +171,37 @@
             <a href="/iniciar-sesion" class="iniciar-sesion">Iniciar Sesión</a>
         </nav>
     </header>
+    <div class="content">
+        <div class="background-image"></div> 
+        <div class="call-to-action">
+            Regístrate o Inicia Sesión para acceder a todas las estadísticas y recomendaciones de apuestas
+        </div>
+        </div class="table-container">
+            <table class="fixtures-table">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Equipo Local</th>
+                    <th>Equipo Visitante</th>
+                    <th>Estadio</th>
+                    <!-- Añade más columnas según sea necesario -->
+                </tr>
+                {% for partido in dataFixtures %}
+                <tr>
+                    <td>{{ partido['fixture']['date'] | to_datetime }}</td>
+                    <td>
+                        <img src="{{ partido['teams']['home']['logo'] }}" alt="{{ partido['teams']['home']['name'] }}" />
+                        {{ partido['teams']['home']['name'] }}
+                    </td>
+                    <td>
+                        <img src="{{ partido['teams']['away']['logo'] }}" alt="{{ partido['teams']['away']['name'] }}" />
+                        {{ partido['teams']['away']['name'] }}
+                    </td>
+                    <td>{{ partido['fixture']['venue']['name'] }}</td>
+                    <!--td>{{ partido['goals']['home'] }} - {{ partido['goals']['away'] }}</td-->
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 </body>
 </html>
