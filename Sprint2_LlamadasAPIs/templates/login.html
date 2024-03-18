@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: grid;
+            grid-gap: 10px;
+        }
+        input[type=text],
+        input[type=email],
+        input[type=password],
+        input[type=tel] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px;
+            background-color: #5c67ec;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4a52d1;
+        }
+        .divider {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            display: inline-block;
+            width: 20%;
+            height: 1px;
+            background: #ddd;
+            vertical-align: middle;
+        }
+        .divider::before {
+            margin-right: .5em;
+        }
+        .divider::after {
+            margin-left: .5em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!--img src="{{ url_for('static', filename='sources/favicon.svg') }}" alt="Logo" style="display: block; margin: 0 auto;"-->
+    <h2>Crea tu cuenta</h2>
+    <form action="/auth/register" method="POST">
+        <input type="text" name="nombre" placeholder="Nombre" required>
+        <input type="text" name="apellidos" placeholder="Apellidos" required>
+        <input type="email" name="correo" placeholder="Correo electrónico" required>
+        <input type="tel" name="telefono" placeholder="Teléfono" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Crear</button>
+    </form>
+
+    <div class="divider">Inicia sesión</div>
+
+    <form action="/auth/login" method="POST">
+        <input type="email" name="correo" placeholder="Correo electrónico" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Entrar</button>
+    </form>
+</div>
+
+</body>
+</html>
+
