@@ -1,8 +1,7 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, render_template
 from datetime import datetime, timedelta, timezone
 import requests
 import json
-import pytz
 
 app = Flask(__name__)
 
@@ -10,41 +9,15 @@ app = Flask(__name__)
 def to_datetime_filter(value, format='%Y-%m-%dT%H:%M:%S%z'):
     return datetime.strptime(value, format).strftime('%d/%m/%Y %H:%M')
 
-
 def load_api_key():
     with open('configEst.json', 'r') as config_file:
         config = json.load(config_file)
-        return config.get('api_key', None)
+    return config.get('api_key', None)
 
-@app.route('/api/standings')
-def get_standings():
-    url = "https://api-football-v1.p.rapidapi.com/v3/standings"
-    querystring = {"season": "2023", "league": "140"}
-
-    # Obtener la clave de API desde el archivo de configuración
-    api_key = load_api_key()
-
-    if api_key is None:
-        return "Error: Clave de API no encontrada en el archivo de configuración."
-
-    headers = {
-        "X-RapidAPI-Key": api_key,
-        "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com"
-    }
-    response = requests.get(url, headers=headers, params=querystring)
-    data = response.json()
-
-    # Imprimir los datos en la consola para comprender su estructura
-    #print(data)
-
-    return render_template('standings.html', data=data)
-
-
-@app.route('/')
-def get_partidosJornada():
+@app.route('/update-data')
+def update_data():
     url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
     querystring = {"season": "2023", "league": "140"}
-
     api_key = load_api_key()
 
     if api_key is None:
@@ -55,18 +28,13 @@ def get_partidosJornada():
         "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com"
     }
     responseFixtures = requests.get(url, headers=headers, params=querystring)
+
+    if responseFixtures.status_code != 200:
+        # Si la respuesta de la API no es exitosa, regresa un mensaje de error.
+        return f'Error al obtener los datos de la API: {responseFixtures.status_code}'
+
     dataFixtures = responseFixtures.json()
 
-    #print(dataFixtures)
-    """ 
-    fechaHoy = datetime.now(timezone.utc)
-    print(fechaHoy)  # Debería mostrar la fecha y hora actuales en formato UTC
-    print(len(dataFixtures['response']))  # Debería mostrar el número de partidos disponibles
-
-    proximos_partidos = [partido for partido in dataFixtures['response']
-                     if datetime.strptime(partido['fixture']['date'], '%Y-%m-%dT%H:%M:%S%z') > fechaHoy]
-    """
-    
     fecha_hoy = datetime.now(timezone.utc)
     jornadas_futuras = set()
     partidos_por_jornada = {}
@@ -90,18 +58,43 @@ def get_partidosJornada():
                 jornada_proxima = jornada
                 break
 
-    # Si no se encuentra jornada próxima bajo estos criterios, se elige la más cercana por fecha
     if not jornada_proxima:
         jornada_proxima = min(jornadas_futuras, key=lambda x: min(datetime.strptime(p['fixture']['date'], '%Y-%m-%dT%H:%M:%S%z') for p in partidos_por_jornada[x]))
 
     proximos_partidos = partidos_por_jornada.get(jornada_proxima, [])
     proximos_partidos_ordenados = sorted(proximos_partidos, key=lambda p: datetime.strptime(p['fixture']['date'], '%Y-%m-%dT%H:%M:%S%z'))
 
-    return render_template('landing.html',dataFixtures=proximos_partidos_ordenados)
+    url_standings = "https://api-football-v1.p.rapidapi.com/v3/standings"
+    querystring_standings = {"season": "2023", "league": "140"}
+    response_standings = requests.get(url_standings, headers=headers, params=querystring_standings)
 
+    if response_standings.status_code != 200:
+        return f'Error al obtener los datos de la clasificación de la API: {response_standings.status_code}'
 
+    data_standings = response_standings.json()
+    
+    data = {
+        'fixtures': proximos_partidos_ordenados,  # Asume que ya has definido esta variable
+        'standings': data_standings['response']
+    }
+    
+    # Guardar los próximos partidos ordenados en un archivo JSON.
+    with open('data.json', 'w') as f:
+        json.dump(data, f)
 
+    return 'Datos actualizados y guardados en data.json'
 
+@app.route('/')
+def home():
+    try:
+        with open('data.json', 'r') as f:
+            #dataFixtures = json.load(f)
+            data = json.load(f)
+        # Supongamos que 'dataFixtures' contiene la lista de partidos dentro de 'response'
+        #return render_template('landing.html', dataFixtures=dataFixtures)
+        return render_template('landing.html', dataFixtures=data['fixtures'], standings=data['standings'])
+    except (IOError, ValueError):
+        return 'Error al cargar los datos desde el archivo', 500
 
 if __name__ == '__main__':
     app.run(debug=True)
