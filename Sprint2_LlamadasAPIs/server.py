@@ -95,6 +95,11 @@ def home():
         return render_template('landing.html', dataFixtures=data['fixtures'], standings=data['standings'])
     except (IOError, ValueError):
         return 'Error al cargar los datos desde el archivo', 500
+    
+@app.route('/iniciar-sesion')
+def iniciar_sesion():
+    return render_template('login.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
