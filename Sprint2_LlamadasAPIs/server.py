@@ -4,6 +4,7 @@ import requests
 import json
 
 from flask import request, make_response
+from flask import redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -28,11 +29,16 @@ class User(db.Model):
 # Ruta para el registro de usuarios
 @app.route("/register", methods=['POST'])
 def register():
+    
+    # Verifica si todos los campos necesarios están presentes
     if request.headers.get('Content-Type') == 'application/json':
+        # Obtener los datos JSON del formulario
         data = request.get_json()
         print("Data received:", data)  # Imprime los datos recibidos desde el cliente
     else:
+        # Si la solicitud no es JSON, devolver un error
         print("Invalid Content-Type:", request.headers.get('Content-Type'))  # Imprime el tipo de contenido de la solicitud
+        return jsonify({"error": "Invalid Content-Type"}), 400
     
     # Verifica si todos los campos necesarios están presentes
     if "nombre" not in data or "apellidos" not in data or "correo" not in data or "telefono" not in data or "password" not in data:
@@ -54,7 +60,11 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({"message": "User registered successfully"}), 201
+    #return jsonify({"message": "User registered successfully"}), 201
+    # Después de que el usuario se haya registrado correctamente
+    app.logger.debug("Usuario registrado correctamente. Redirigiendo a /dashboard.")
+    return redirect("/dashboard")
+
 
 
 @app.template_filter('to_datetime')
@@ -142,8 +152,6 @@ def home():
         with open('data.json', 'r') as f:
             #dataFixtures = json.load(f)
             data = json.load(f)
-        # Supongamos que 'dataFixtures' contiene la lista de partidos dentro de 'response'
-        #return render_template('landing.html', dataFixtures=dataFixtures)
         return render_template('landing.html', dataFixtures=data['fixtures'], standings=data['standings'])
     except (IOError, ValueError):
         return 'Error al cargar los datos desde el archivo', 500
@@ -154,7 +162,13 @@ def iniciar_sesion():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    try:
+        with open('data.json', 'r') as f:
+            data = json.load(f)
+        standings = data.get('standings', [])  # Obtener la lista de clasificaciones
+        return render_template('dashboard.html', standings=standings)
+    except (IOError, ValueError):
+        return 'Error al cargar los datos desde el archivo', 500
 
 if __name__ == '__main__':
     #db.create_all()

@@ -114,7 +114,13 @@
                 body: JSON.stringify(userData)
             })
             .then(response => {
-                // Manejar la respuesta del servidor aquí
+                if (response.ok) {
+                // Redirigir a /dashboard si la solicitud fue exitosa
+                window.location.href = '/dashboard';
+                } else {
+                    // Manejar errores si la solicitud no fue exitosa
+                    console.error('Error en la solicitud:', response.statusText);
+                }
             })
             .catch(error => {
                 console.error("Error al enviar la solicitud:", error);
