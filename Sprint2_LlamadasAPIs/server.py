@@ -1,9 +1,61 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 from datetime import datetime, timedelta, timezone
 import requests
 import json
 
+from flask import request, make_response
+from flask_sqlalchemy import SQLAlchemy
+import uuid
+from werkzeug.security import generate_password_hash, check_password_hash
+
 app = Flask(__name__)
+
+# Configuración de la base de datos SQLite
+#app.config['SECRET_KEY'] = 'ItsIsNotAgoodIdeaToPutYourSecretKEYhere'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/javi/ISI/WiseBet/WiseBet/Sprint2_LlamadasAPIs/usuarios.db'  # La ruta a la base de datos SQLite
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+db = SQLAlchemy(app)
+
+# Definición del modelo de usuario
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100))
+    password = db.Column(db.String(80))
+    email = db.Column(db.String(100), unique=True)
+    phone = db.Column(db.String(15))
+
+# Ruta para el registro de usuarios
+@app.route("/register", methods=['POST'])
+def register():
+    if request.headers.get('Content-Type') == 'application/json':
+        data = request.get_json()
+        print("Data received:", data)  # Imprime los datos recibidos desde el cliente
+    else:
+        print("Invalid Content-Type:", request.headers.get('Content-Type'))  # Imprime el tipo de contenido de la solicitud
+    
+    # Verifica si todos los campos necesarios están presentes
+    if "nombre" not in data or "apellidos" not in data or "correo" not in data or "telefono" not in data or "password" not in data:
+        return jsonify({"error": "Missing required fields"}), 400
+
+    # Comprueba si el usuario ya existe en la base de datos
+    if User.query.filter_by(email=data["correo"]).first():
+        return jsonify({"error": "Email already exists"}), 400
+
+    # Crea un nuevo usuario
+    new_user = User(
+        username=data["nombre"],  # Se utiliza 'nombre' como username
+        password=generate_password_hash(data["password"]),
+        email=data["correo"],
+        phone=data["telefono"]
+    )
+
+    # Agrega el nuevo usuario a la base de datos
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({"message": "User registered successfully"}), 201
+
 
 @app.template_filter('to_datetime')
 def to_datetime_filter(value, format='%Y-%m-%dT%H:%M:%S%z'):
@@ -100,6 +152,10 @@ def home():
 def iniciar_sesion():
     return render_template('login.html')
 
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 if __name__ == '__main__':
+    #db.create_all()
     app.run(debug=True)

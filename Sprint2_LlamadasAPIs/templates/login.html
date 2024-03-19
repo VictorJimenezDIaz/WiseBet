@@ -73,7 +73,7 @@
 <div class="container">
     <!--img src="{{ url_for('static', filename='sources/favicon.svg') }}" alt="Logo" style="display: block; margin: 0 auto;"-->
     <h2>Crea tu cuenta</h2>
-    <form action="/auth/register" method="POST">
+    <form id="register-form" action="/register" method="POST">
         <input type="text" name="nombre" placeholder="Nombre" required>
         <input type="text" name="apellidos" placeholder="Apellidos" required>
         <input type="email" name="correo" placeholder="Correo electrónico" required>
@@ -84,13 +84,47 @@
 
     <div class="divider">Inicia sesión</div>
 
-    <form action="/auth/login" method="POST">
+    <form action="/login" method="POST">
         <input type="email" name="correo" placeholder="Correo electrónico" required>
         <input type="password" name="password" placeholder="Contraseña" required>
         <button type="submit">Entrar</button>
     </form>
 </div>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var form = document.getElementById("register-form");
+    
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Evitar que el formulario se envíe de forma predeterminada
+    
+            var formData = new FormData(form); // Obtener los datos del formulario
+            var userData = {}; // Objeto para almacenar los datos del usuario
+    
+            // Iterar sobre los datos del formulario y agregarlos al objeto userData
+            formData.forEach(function(value, key) {
+                userData[key] = value;
+            });
+    
+            // Enviar los datos al servidor Flask en formato JSON
+            fetch("/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => {
+                // Manejar la respuesta del servidor aquí
+            })
+            .catch(error => {
+                console.error("Error al enviar la solicitud:", error);
+            });
+        });
+    });
+    </script>
+    
 </body>
 </html>
+
+
 
