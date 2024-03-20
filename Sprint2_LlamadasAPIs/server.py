@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session
 from datetime import datetime, timedelta, timezone
 import requests
 import json
@@ -12,7 +12,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 
 # Configuración de la base de datos SQLite
-#app.config['SECRET_KEY'] = 'ItsIsNotAgoodIdeaToPutYourSecretKEYhere'
+app.config['SECRET_KEY'] = 'ClaveSecreta'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/javi/ISI/WiseBet/WiseBet/Sprint2_LlamadasAPIs/usuarios.db'  # La ruta a la base de datos SQLite
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
@@ -63,6 +63,31 @@ def register():
     #return jsonify({"message": "User registered successfully"}), 201
     # Después de que el usuario se haya registrado correctamente
     app.logger.debug("Usuario registrado correctamente. Redirigiendo a /dashboard.")
+    return redirect("/dashboard")
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    # Verifica si todos los campos necesarios están presentes
+    if request.headers.get('Content-Type') == 'application/json':
+        data = request.get_json()
+    else:
+        return jsonify({"error": "Invalid Content-Type"}), 400
+
+    email = data.get('correo')
+    password = data.get('password')
+    
+    if not email or not password:
+        return jsonify({"error": "Missing email or password"}), 400
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user or not check_password_hash(user.password, password):
+        return jsonify({"error": "Invalid username or password"}), 401
+
+    # Si la validación es correcta, puedes iniciar sesión al usuario.
+    session['user_id'] = user.id  # Por ejemplo, almacenando el ID del usuario en la sesión.
+    app.logger.debug("Usuario logueado correctamente. Redirigiendo a /dashboard.")
     return redirect("/dashboard")
 
 

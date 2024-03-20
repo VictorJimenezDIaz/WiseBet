@@ -84,7 +84,7 @@
 
     <div class="divider">Inicia sesión</div>
 
-    <form action="/login" method="POST">
+    <form id="login-form" action="/login" method="POST">
         <input type="email" name="correo" placeholder="Correo electrónico" required>
         <input type="password" name="password" placeholder="Contraseña" required>
         <button type="submit">Entrar</button>
@@ -128,6 +128,47 @@
         });
     });
     </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var loginForm = document.getElementById("login-form");
+    
+        loginForm.addEventListener("submit", function(event) {
+            event.preventDefault(); // Evitar que el formulario se envíe de forma predeterminada
+    
+            var formData = new FormData(loginForm); // Obtener los datos del formulario
+            var loginData = {}; // Objeto para almacenar los datos de inicio de sesión
+    
+            // Iterar sobre los datos del formulario y agregarlos al objeto loginData
+            formData.forEach(function(value, key) {
+                loginData[key] = value;
+            });
+    
+            // Enviar los datos al servidor Flask en formato JSON
+            fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(loginData)
+            })
+            .then(response => {
+                
+                if (response.ok) {
+                    // Si la respuesta es OK pero no hay redirección, manejar según sea necesario
+                    // Por ejemplo, puedes redirigir manualmente o mostrar un mensaje de éxito
+                    window.location.href = '/dashboard';
+                } else {
+                    // Manejar respuestas de error (por ejemplo, mostrar un mensaje)
+                    alert("Credenciales incorrectas o error al iniciar sesión.");
+                }
+            })
+            .catch(error => {
+                console.error("Error al enviar la solicitud:", error);
+            });
+        });
+    });
+</script>
     
 </body>
 </html>
