@@ -185,13 +185,37 @@ def home():
 def iniciar_sesion():
     return render_template('login.html')
 
+@app.route('/cerrar-sesion')
+def cerrar_sesion():
+    # Elimina el usuario de la sesión
+    session.pop('user_id', None)
+    return redirect(url_for('home'))  # Redirige a la página de inicio
+
 @app.route('/dashboard')
 def dashboard():
     try:
+
+        # Verifica si hay una sesión activa
+        if 'user_id' not in session:
+            return redirect('/iniciar-sesion')  # Si no hay sesión, redirige al inicio de sesión
+        
+        # Obtén el ID del usuario de la sesión
+        user_id = session['user_id']
+        
+        # Busca al usuario en la base de datos por su ID
+        user = User.query.get(user_id)
+        
+        # Verifica si se encontró el usuario y si tiene un correo electrónico registrado
+        if user and user.email:
+            email = user.email  # Obtiene el correo electrónico del usuario
+        else:
+            email = "Correo no encontrado"  # O algún otro mensaje si el correo no está disponible
+
         with open('data.json', 'r') as f:
             data = json.load(f)
         standings = data.get('standings', [])  # Obtener la lista de clasificaciones
-        return render_template('dashboard.html', standings=standings)
+        dataFixtures = data.get('fixtures', [])
+        return render_template('dashboard.html', email=email,standings=standings, dataFixtures=dataFixtures)
     except (IOError, ValueError):
         return 'Error al cargar los datos desde el archivo', 500
 
