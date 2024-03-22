@@ -281,7 +281,7 @@ def estimar_probabilidad_de_victoria(equipo):
     }
     return probabilidades.get(equipo, 0.5)  # Devuelve 0.5 como probabilidad por defecto si el equipo no está en el diccionario
 
-API_KEY = 'd3cdb0be7aba76409fb0b186bdb2692d'
+API_KEY = 
 SPORT='soccer_spain_la_liga'
 
 
