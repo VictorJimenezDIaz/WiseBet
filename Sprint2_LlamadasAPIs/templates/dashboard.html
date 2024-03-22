@@ -303,6 +303,16 @@
             <a href="#"><i class="fas fa-user"></i></a>
         </nav>
     </header>
+    <h2>Apuestas con Valor</h2>
+    {% if eventos_con_valor %}
+        <ul>
+            {% for evento in eventos_con_valor %}
+                <li>{{ evento.partido }}: {{ evento.equipo }} a cuota {{ evento.cuota }} en {{ evento.casa }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron apuestas con valor.</p>
+    {% endif %}
     <div class="content">
         <div class="background-image"></div> 
     

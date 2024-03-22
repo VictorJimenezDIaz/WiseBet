@@ -62,6 +62,8 @@ def register():
 
     #return jsonify({"message": "User registered successfully"}), 201
     # Después de que el usuario se haya registrado correctamente
+    session['user_id'] = new_user.id  # Almacena el ID del usuario recién creado en la sesión
+
     app.logger.debug("Usuario registrado correctamente. Redirigiendo a /dashboard.")
     return redirect("/dashboard")
 
@@ -194,30 +196,94 @@ def cerrar_sesion():
 @app.route('/dashboard')
 def dashboard():
     try:
-
         # Verifica si hay una sesión activa
         if 'user_id' not in session:
-            return redirect('/iniciar-sesion')  # Si no hay sesión, redirige al inicio de sesión
-        
+            return redirect('/iniciar-sesion')
+
         # Obtén el ID del usuario de la sesión
         user_id = session['user_id']
         
         # Busca al usuario en la base de datos por su ID
         user = User.query.get(user_id)
-        
-        # Verifica si se encontró el usuario y si tiene un correo electrónico registrado
+
         if user and user.email:
-            email = user.email  # Obtiene el correo electrónico del usuario
+            email = user.email
         else:
-            email = "Correo no encontrado"  # O algún otro mensaje si el correo no está disponible
+            email = "Correo no encontrado"
 
         with open('data.json', 'r') as f:
             data = json.load(f)
-        standings = data.get('standings', [])  # Obtener la lista de clasificaciones
+        standings = data.get('standings', [])
         dataFixtures = data.get('fixtures', [])
-        return render_template('dashboard.html', email=email,standings=standings, dataFixtures=dataFixtures)
+
+        # Lógica para obtener y filtrar apuestas con valor
+        eventos_con_valor = []  # Aquí se almacenarán las apuestas filtradas
+        url = f'https://api.the-odds-api.com/v4/sports/soccer_spain_la_liga/odds'
+        
+        params = {
+            'api_key': API_KEY,
+            'regions': 'us',
+            'markets': 'h2h',
+            'oddsFormat': 'decimal',
+            'dateFormat': 'iso',
+        }
+        
+        response = requests.get(url, params=params)
+
+        if response.status_code == 200:
+            eventos = response.json()
+            print('Remaining requests', response.headers['x-requests-remaining'])
+            print('Used requests', response.headers['x-requests-used'])
+            print("Eventos recibidos:", len(eventos))  # Ver cuántos eventos recibimos
+            for evento in eventos:
+                for bookmaker in evento['bookmakers']:
+                    for market in bookmaker['markets']:
+                        if market['key'] == 'h2h':
+                            for outcome in market['outcomes']:
+                                # Implementación del cálculo del valor esperado
+                                probabilidad_estimada = estimar_probabilidad_de_victoria(outcome['name'])
+                                cuota = outcome['price']
+                                valor_esperado = (probabilidad_estimada * cuota) - 1
+                                
+                                if valor_esperado > 1.5:
+                                    eventos_con_valor.append({
+                                        'partido': f"{evento['home_team']} vs {evento['away_team']}",
+                                        'cuota': cuota,
+                                        'equipo': outcome['name'],
+                                        'casa': bookmaker['title']
+                                        
+                                        #'valor_esperado': valor_esperado
+                                    })
+                                    #print(f"Añadido evento con valor: {outcome['name']} con cuota {cuota}")
+        else:
+            print(f"Error al obtener las cuotas: {response.status_code}")
+        
+
+        return render_template('dashboard.html', email=email, standings=standings, dataFixtures=dataFixtures, eventos_con_valor=eventos_con_valor)
+
     except (IOError, ValueError):
         return 'Error al cargar los datos desde el archivo', 500
+
+    
+
+
+    ########OBTENCION DE CUOTAS
+
+def estimar_probabilidad_de_victoria(equipo):
+    # Este es un ejemplo simplificado. Tu lógica/modelo debe ir aquí
+    probabilidades = {
+        "Real Madrid": 0.75,
+        "Barcelona": 0.7,
+        "Atlético de Madrid": 0.65,
+        "Sevilla": 0.6,
+        "Valencia": 0.55,
+        # Añade más equipos y sus probabilidades estimadas de ganar
+    }
+    return probabilidades.get(equipo, 0.5)  # Devuelve 0.5 como probabilidad por defecto si el equipo no está en el diccionario
+
+API_KEY = 'd3cdb0be7aba76409fb0b186bdb2692d'
+SPORT='soccer_spain_la_liga'
+
 
 if __name__ == '__main__':
     #db.create_all()
