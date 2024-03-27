@@ -237,6 +237,26 @@
             background-color: #dc3545;
             color: white;
         }
+
+        .value-bets-table {
+            width: auto; /* Ajusta esto según necesites */
+            border-collapse: collapse;
+            background-color: white;
+            font-size: 11.5px; /* Ajusta el tamaño de fuente según necesites */
+            margin-top: 0px; /* Ajusta esto según necesites */
+        }
+
+        .value-bets-table th,
+        .value-bets-table td {
+            padding: 8px;
+            border: 2px solid black;
+            text-align: left; /* O center si prefieres que el texto esté centrado */
+        }
+
+        .value-bets-table th {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
         
 
         
@@ -303,20 +323,39 @@
             <a href="#"><i class="fas fa-user"></i></a>
         </nav>
     </header>
-    <h2>Apuestas con Valor</h2>
-    {% if eventos_con_valor %}
-        <ul>
-            {% for evento in eventos_con_valor %}
-                <li>{{ evento.partido }}: {{ evento.equipo }} a cuota {{ evento.cuota }} en {{ evento.casa }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No se encontraron apuestas con valor.</p>
-    {% endif %}
+    
+    
     <div class="content">
         <div class="background-image"></div> 
     
         <div class="tables-container">
+            <div class="value-bets-container">
+                <!--h2>Apuestas con Valor</h2-->
+                {% if eventos_con_valor %}
+                <table class="value-bets-table">
+                    <thead>
+                        <tr>
+                            <th>Partido</th>
+                            <th>Gana</th>
+                            <th>Cuota</th>
+                            <th>Casa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for evento in eventos_con_valor %}
+                        <tr>
+                            <td>{{ evento.partido }}</td>
+                            <td>{{ evento.equipo }}</td>
+                            <td>{{ evento.cuota }}</td>
+                            <td>{{ evento.casa }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No se encontraron apuestas con valor.</p>
+                {% endif %}
+            </div>
             <div class="standings-container">
                 <!--h2>Clasificación de La Liga</h2-->
                 <table class="standings-table">
