@@ -181,7 +181,7 @@ def home():
             data = json.load(f)
         return render_template('landing.html', dataFixtures=data['fixtures'], standings=data['standings'])
     except (IOError, ValueError):
-        return 'Error al cargar los datos desde el archivo', 500
+        return 'Error al cargar los datos desde el archivo home', 500
     
 @app.route('/iniciar-sesion')
 def iniciar_sesion():
@@ -281,7 +281,12 @@ def estimar_probabilidad_de_victoria(equipo):
     }
     return probabilidades.get(equipo, 0.5)  # Devuelve 0.5 como probabilidad por defecto si el equipo no está en el diccionario
 
-API_KEY = 
+def load_api_key_cuo():
+    with open('configCuo.json', 'r') as config_file:
+        config = json.load(config_file)
+    return config.get('api_key', None)
+
+API_KEY = load_api_key_cuo()
 SPORT='soccer_spain_la_liga'
 
 
