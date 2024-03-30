@@ -60,11 +60,6 @@ def handler_login():
 def to_datetime_filter(value, format='%Y-%m-%dT%H:%M:%S%z'):
     return datetime.strptime(value, format).strftime('%d/%m/%Y %H:%M')
 
-""" 
-def load_api_key():
-    with open('configEst.json', 'r') as config_file:
-        config = json.load(config_file)
-    return config.get('api_key', None) """
 
 @app.route('/update-data')
 def handler_update_data():
@@ -80,6 +75,10 @@ def home():
         return render_template('landing.html', dataFixtures=data['fixtures'], standings=data['standings'])
     except (IOError, ValueError):
         return 'Error al cargar los datos desde el archivo', 500
+    
+@app.route('/quienes-somos')
+def quienes_somos():
+    return render_template('about.html')
     
 @app.route('/iniciar-sesion')
 def iniciar_sesion():
