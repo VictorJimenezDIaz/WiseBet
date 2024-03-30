@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 # Configuración de la base de datos SQLite
 app.config['SECRET_KEY'] = 'ClaveSecreta'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/javi/ISI/WiseBet/WiseBet/Sprint2_LlamadasAPIs/usuarios.db'  # La ruta a la base de datos SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/javi/ISI/WiseBet/WiseBet/Sprint3_aplicacion/usuarios.db'  # La ruta a la base de datos SQLite
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db.init_app(app)
