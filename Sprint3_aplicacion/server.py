@@ -89,6 +89,10 @@ def cerrar_sesion():
     session.pop('user_id', None)
     return redirect(url_for('home'))  # Redirige a la página de inicio
 
+@app.route('/apostar')
+def apostar():
+    return render_template('apostar.html')
+
 @app.route('/dashboard')
 def dashboard():
     try:
@@ -120,6 +124,8 @@ def dashboard():
 
     except (IOError, ValueError):
         return 'Error al cargar los datos desde el archivo', 500
+    
+    
 
 
 if __name__ == '__main__':

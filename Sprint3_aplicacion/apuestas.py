@@ -42,9 +42,8 @@ def filtrar_apuestas_con_valor(eventos):
         eventos = response.json()
         print('Remaining requests', response.headers['x-requests-remaining'])
         print('Used requests', response.headers['x-requests-used'])
-        print("Eventos recibidos:", len(eventos))  # Ver cuántos eventos recibimos
+        #print("Eventos recibidos:", len(eventos))  # Ver cuántos eventos recibimos
         for evento in eventos:
-            print(eventos)
             for bookmaker in evento['bookmakers']:
                 for market in bookmaker['markets']:
                     if market['key'] == 'h2h':
