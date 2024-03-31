@@ -3,6 +3,7 @@ from datetime import datetime, timedelta, timezone
 import requests
 import json
 import uuid
+import os
 
 from database import User, db
 from auth import register, login
@@ -11,9 +12,12 @@ from apuestas import calcular_valor_esperado, filtrar_apuestas_con_valor, estima
 
 app = Flask(__name__)
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+db_path = os.path.join(basedir, 'usuarios.db')
+
 # Configuración de la base de datos SQLite
 app.config['SECRET_KEY'] = 'ClaveSecreta'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/javi/ISI/WiseBet/WiseBet/Sprint3_aplicacion/usuarios.db'  # La ruta a la base de datos SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db.init_app(app)
