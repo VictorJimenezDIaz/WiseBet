@@ -79,6 +79,14 @@ def home():
 @app.route('/quienes-somos')
 def quienes_somos():
     return render_template('about.html')
+
+@app.route('/precios')
+def precios():
+    return render_template('pricing.html')
+
+@app.route('/apis')
+def apis():
+    return render_template('api_info.html')
     
 @app.route('/iniciar-sesion')
 def iniciar_sesion():

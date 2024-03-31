@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ url_for('static', filename='sources/favicon.svg') }}" type="image/x-icon">
-    <link rel="icon" href="{{ url_for('static', filename='sources/favicon.svg') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='sources/faviconDefi.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='sources/faviconDefi.png') }}" type="image/x-icon">
 
     <title>WiseBet - Apuestas Inteligentes, Ganancias seguras</title>
     <style>
@@ -29,15 +29,15 @@
             display: inline-block; /* Allows the div to be clicked */
             flex-direction: column;
             justify-content: center;
-            padding: 10px;
-            margin-left: 10px;
+            padding: 0px;
+            margin-left: 0px;
+            
         }
-        .header .menu-icon div {
-            width: 30px; /* Width of the menu icon */
-            height: 3px; /* Height of each line */
-            background-color: white;
-            margin: 5px 0; /* Spacing between lines */
-            transition: all 0.4s ease;
+        .header .menu-icon img {
+            width: 70px; /* o el tamaño deseado */
+            height: auto; /* mantiene la proporción de la imagen */
+            justify-content: center;
+            flex-direction: column;
         }
         .header .branding {
             display: flex;
@@ -100,9 +100,9 @@
     <header class="header">
         <div class="branding">
             <div class="menu-icon">
-                <div></div>
-                <div></div>
-                <div></div>
+                <a href="/" class="menu-icon">
+                    <img src="{{ url_for('static', filename='sources/faviconDefi-blanco.png') }}" alt="Logo de WiseBet">
+                </a>
             </div>
             <a href="/" class="logo">WiseBet</a>
             <div class="tagline">Apuestas inteligentes, Ganancias seguras</div>
