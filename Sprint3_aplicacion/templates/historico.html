@@ -139,46 +139,30 @@
             text-decoration: none; 
         }
 
-        .container {
-            align-items: center;
+        .history-container {
             padding: 20px;
-        }
-
-        .container h1 {
-            text-align: center;
-            vertical-align: top;
-        }
-        
-
-        .betting-companies-container {
+            background-color: #f4f4f4; 
+            min-height: calc(100vh - 40px); /* Adjust the height to take into account the header */
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            padding: 20px;
-            width: 100%;
-        }   
+            flex-direction: column;
+            align-items: center;
+        }
 
-        .betting-company {
-            text-align: center;
-            
-            margin: 20px;
-            flex-basis: 20%;
-            flex-basis: calc(25% - 40px); /* 100% / 4 columns - (margin * 2) */
-            max-width: calc(25% - 40px); /* 100% / 4 columns - (margin * 2) */
+        .history-title {
+            font-size: 24px;
+            margin-top: 20px;
         }
-        .betting-company img {
-            width: 100px; /* Ajusta esto según el tamaño deseado de los logos */
-            height: auto;
-            margin-bottom: 10px;
-        }
-        .betting-company a {
-            display: block;
+
+        .user-email {
+            font-size: 20px;
             color: #333;
-            text-decoration: none;
-            font-weight: bold;
+            margin: 10px 0;
         }
-        .betting-company a:hover {
-            text-decoration: underline;
+
+        .chart-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -190,7 +174,7 @@
                     <img src="{{ url_for('static', filename='sources/faviconDefi-blanco.png') }}" alt="Logo de WiseBet">
                 </a>
             </div>
-            <a href='/dashboard 'class="logo">WiseBet</a>
+            <div class="logo">WiseBet</div>
             <div class="tagline">Apuestas inteligentes, Ganancias seguras</div>
         </div>
         <nav>
@@ -201,63 +185,11 @@
         </nav>
     </header>
 
-
-        
-<div class="container">
-	
-    <h1>Puedes apostar en las siguientes casas de apuestas:</h1>
-    
-    <div class="betting-companies-container"> 
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/unibet.png') }}" alt="Unibet">
-            <a href="https://www.unibet.com">Unibet</a>
+        <div class="history-container">
+            <h1 class="history-title">Historial de Apuestas</h1>
+            <p>Usuario: <span class="user-email">{{ email }}</span></p>
+            <img src="{{ url_for('static', filename='sources/historial.png') }}" alt="Gráfico del Historial de Apuestas" class="chart-image">
         </div>
-        <!-- Repite el bloque anterior para cada casa de apuestas, ajustando el src del img y el href del a -->
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/caesars.png') }}" alt="Caesars">
-            <a href="https://www.caesars.com">Caesars</a>
-        </div>
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/betonline.jpeg') }}" alt="BetOnline">
-            <a href="https://www.betonline.ag/">BetOnline</a>
-        </div>
-        
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/betrivers.png') }}" alt="BetRivers">
-            <a href="https://www.betrivers.com/">BetRivers</a>
-        </div>
-        <!------------------------------------------------------------------------------------------->
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/bovada.png') }}" alt="Bovada">
-            <a href="https://www.bovada.lv/">Bovada</a>
-        </div>
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/draftkings.png') }}" alt="DraftKings">
-            <a href="https://www.draftkings.com/">DraftKings</a>
-        </div>
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/fanduel.png') }}" alt="FanDuel">
-            <a href="https://www.fanduel.com/">FanDuel</a>
-        </div>
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/mybookie.jpeg') }}" alt="MyBookie">
-            <a href="https://www.mybookie.ag/">MyBookie</a>
-        </div>
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/pointbet.png') }}" alt="PointBet">
-            <a href="https://nj.pointsbet.com/">PointBet</a>
-        </div>
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/superbook.png') }}" alt="SuperBook">
-            <a href="https://www.superbook.com/">SuperBook</a>
-        </div>
-        <div class="betting-company">
-            <img src="{{ url_for('static', filename='sources/wynnbet.jpeg') }}" alt="WynnBet">
-            <a href="https://www.wynnbet.com/">WynnBet</a>
-    </div>
-</div>
-
-    
 </div>
 <div id="myModal" class="modal">
     <!-- Contenido del modal -->

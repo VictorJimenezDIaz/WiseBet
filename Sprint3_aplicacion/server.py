@@ -93,6 +93,25 @@ def cerrar_sesion():
 def apostar():
     return render_template('apostar.html')
 
+@app.route('/historico')
+def historico():
+    if 'user_id' not in session:
+        return redirect('/iniciar-sesion')
+
+    # Obtiene el ID del usuario de la sesión
+    user_id = session['user_id']
+    
+    # Busca al usuario en la base de datos por su ID
+    user = User.query.get(user_id)
+
+    if user and user.email:
+        email = user.email
+    else:
+        email = "Correo no encontrado"
+    
+    # Pasa el email del usuario a la plantilla
+    return render_template('historico.html', email=email)
+
 @app.route('/dashboard')
 def dashboard():
     try:
