@@ -8,6 +8,11 @@ def load_api_key():
         config = json.load(config_file)
     return config.get('api_key', None)
 
+def load_api_key_cuo():
+    with open('configCuo.json', 'r') as config_file:
+        config = json.load(config_file)
+    return config.get('api_key', None)
+
 def update_data():
     url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
     querystring = {"season": "2023", "league": "140"}
