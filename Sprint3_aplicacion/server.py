@@ -1,13 +1,8 @@
-from flask import Flask, render_template, jsonify, request, session
+from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 from datetime import datetime, timedelta, timezone
 import requests
 import json
-
-from flask import request, make_response
-from flask import redirect, url_for
-#from flask_sqlalchemy import SQLAlchemy
 import uuid
-from werkzeug.security import generate_password_hash, check_password_hash
 
 from database import User, db
 from auth import register, login
@@ -23,16 +18,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 db.init_app(app)
 
-"""
-db = SQLAlchemy(app)
-
-# Definición del modelo de usuario
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100))
-    password = db.Column(db.String(80))
-    email = db.Column(db.String(100), unique=True)
-    phone = db.Column(db.String(15)) """
 
 # Ruta para el registro de usuarios
 @app.route("/register", methods=['POST'])
@@ -131,32 +116,6 @@ def dashboard():
 
     except (IOError, ValueError):
         return 'Error al cargar los datos desde el archivo', 500
-
-    
-
-
-    ########OBTENCION DE CUOTAS
-"""
-def estimar_probabilidad_de_victoria(equipo):
-    # Este es un ejemplo simplificado. Tu lógica/modelo debe ir aquí
-    probabilidades = {
-        "Real Madrid": 0.75,
-        "Barcelona": 0.7,
-        "Atlético de Madrid": 0.65,
-        "Sevilla": 0.6,
-        "Valencia": 0.55,
-        # Añade más equipos y sus probabilidades estimadas de ganar
-    }
-    return probabilidades.get(equipo, 0.5)  # Devuelve 0.5 como probabilidad por defecto si el equipo no está en el diccionario
-
- 
-def load_api_key_cuo():
-    with open('configCuo.json', 'r') as config_file:
-        config = json.load(config_file)
-    return config.get('api_key', None)
-
-API_KEY = load_api_key_cuo()
-SPORT='soccer_spain_la_liga' """
 
 
 if __name__ == '__main__':
