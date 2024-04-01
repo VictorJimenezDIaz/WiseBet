@@ -356,7 +356,8 @@
                     </tr>
                     {% for partido in dataFixtures %}
                     <tr>
-                        <td>{{ partido['fixture']['date'] | to_datetime }}</td>
+                        <td>{{ partido['fixture']['date']}}</td>
+
                         <td>
                             <img src="{{ partido['teams']['home']['logo'] }}" alt="{{ partido['teams']['home']['name'] }}" />
                             {{ partido['teams']['home']['name'] }}

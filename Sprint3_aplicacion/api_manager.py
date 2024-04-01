@@ -1,6 +1,7 @@
 import requests
 import json
 from datetime import datetime, timedelta, timezone
+import pytz
 
 
 def load_api_key():
@@ -12,6 +13,21 @@ def load_api_key_cuo():
     with open('configCuo.json', 'r') as config_file:
         config = json.load(config_file)
     return config.get('api_key', None)
+
+
+def convertir_a_hora_local(fecha_utc_str, zona_horaria_deseada='Europe/Madrid'):
+    # Intenta parsear la fecha/hora con zona horaria; si falla, intenta sin la zona horaria
+    try:
+        fecha_utc = datetime.strptime(fecha_utc_str, '%Y-%m-%dT%H:%M:%S%z')
+    except ValueError:
+        # Parsear sin zona horaria y asumir UTC
+        fecha_utc = datetime.strptime(fecha_utc_str, '%Y-%m-%d %H:%M:%S')
+        fecha_utc = fecha_utc.replace(tzinfo=pytz.utc)
+    
+    zona_horaria = pytz.timezone(zona_horaria_deseada)
+    fecha_local = fecha_utc.astimezone(zona_horaria)
+    return fecha_local 
+
 
 def update_data():
     url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
@@ -33,23 +49,25 @@ def update_data():
 
     dataFixtures = responseFixtures.json()
 
-    fecha_hoy = datetime.now(timezone.utc)
+    fecha_hoy = datetime.now(pytz.timezone('Europe/Madrid'))
     jornadas_futuras = set()
     partidos_por_jornada = {}
 
     for partido in dataFixtures['response']:
-        fecha_partido = datetime.strptime(partido['fixture']['date'], '%Y-%m-%dT%H:%M:%S%z')
+        fecha_partido = convertir_a_hora_local(partido['fixture']['date'])
+        partido['fixture']['date'] = fecha_partido.strftime('%Y-%m-%d %H:%M:%S')
+
+        print(fecha_partido)
         jornada = partido['league']['round']
         if fecha_partido >= fecha_hoy:
-            jornadas_futuras.add(jornada)
             partidos_por_jornada.setdefault(jornada, []).append(partido)
 
-    jornada_proxima = None
+    jornada_proxima = max(partidos_por_jornada.keys(), key=lambda j: len(partidos_por_jornada[j]))
     for jornada in jornadas_futuras:
         partidos = partidos_por_jornada[jornada]
         partidos_finalizados = sum(1 for p in partidos if p['fixture']['status']['short'] == 'FT')
 
-        if partidos_finalizados >= 8:  # Asumiendo que una jornada completa tiene 10 partidos
+        if partidos_finalizados >= 10:  # Asumiendo que una jornada completa tiene 10 partidos
             fecha_ultimo_partido = max(p['fixture']['date'] for p in partidos)
             fecha_ultimo_partido = datetime.strptime(fecha_ultimo_partido, '%Y-%m-%dT%H:%M:%S%z')
             if fecha_hoy - fecha_ultimo_partido > timedelta(days=1):
@@ -60,7 +78,8 @@ def update_data():
         jornada_proxima = min(jornadas_futuras, key=lambda x: min(datetime.strptime(p['fixture']['date'], '%Y-%m-%dT%H:%M:%S%z') for p in partidos_por_jornada[x]))
 
     proximos_partidos = partidos_por_jornada.get(jornada_proxima, [])
-    proximos_partidos_ordenados = sorted(proximos_partidos, key=lambda p: datetime.strptime(p['fixture']['date'], '%Y-%m-%dT%H:%M:%S%z'))
+    proximos_partidos_ordenados = sorted(proximos_partidos, key=lambda p: convertir_a_hora_local(p['fixture']['date']))
+    #print(proximos_partidos_ordenados)
 
     url_standings = "https://api-football-v1.p.rapidapi.com/v3/standings"
     querystring_standings = {"season": "2023", "league": "140"}

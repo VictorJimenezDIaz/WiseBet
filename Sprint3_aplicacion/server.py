@@ -138,7 +138,6 @@ def dashboard():
         eventos = dataFixtures
         eventos_con_valor = filtrar_apuestas_con_valor(eventos)
         
-
         return render_template('dashboard.html', email=email, standings=standings, dataFixtures=dataFixtures, eventos_con_valor=eventos_con_valor)
 
     except (IOError, ValueError):
