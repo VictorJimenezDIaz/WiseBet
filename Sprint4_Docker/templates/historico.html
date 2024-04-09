@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='sources/faviconDefi.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='sources/faviconDefi.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <title>WiseBet - Apuestas Inteligentes, Ganancias seguras</title>
+    <style>
+        body,html {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            padding: 0;
+            height: 100%;
+            background-color: #f4f4f4; 
+        }
+        
+        nav a .fas.fa-user {
+            font-size: 24px; /* Ajusta el tamaño del icono */
+            color: white; /* Ajusta el color del icono */
+            padding: 8px; /* Añade espaciado alrededor del icono si es necesario */
+        }
+
+        
+        .header {
+            background-color: #F52FC7;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header .menu-icon {
+            cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+            display: inline-block; /* Allows the div to be clicked */
+            flex-direction: column;
+            justify-content: center;
+            padding: 0px;
+            margin-left: 0px;
+            
+        }
+        .header .menu-icon img {
+            width: 70px; /* o el tamaño deseado */
+            height: auto; /* mantiene la proporción de la imagen */
+            justify-content: center;
+            flex-direction: column;
+        }
+        .header .branding {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .header .logo {
+            margin-left: 76px;
+            font-weight: bold;
+            font-size: 30px;
+            margin-top: -50px;
+        }
+        .header .tagline {
+            font-size: 16px;
+            font-weight: 400;
+            margin-left: 76px;
+            
+        }
+
+        .header nav {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .header nav a:hover {
+            text-decoration: underline;
+        }
+        .header nav .iniciar-sesion {
+            font-weight: 700; /* Bold weight for Roboto */
+            padding: 8px 16px;
+            border: 2px solid white;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+
+        
+        .header nav .inicia-sesion:hover {
+            background-color: #e600e6; /* Darker shade when hovered */
+        }
+
+
+        .modal {
+            display: none; /* Oculta el modal por defecto */
+            position: fixed; /* Fija la posición del modal */
+            z-index: 1; /* Pone el modal por encima de otros elementos */
+            left: 0;
+            top: 0;
+            width: 100%; /* Ancho completo */
+            height: 100%; /* Alto completo */
+            overflow: auto; /* Añade desplazamiento si el contenido es demasiado largo */
+            background-color: rgba(0,0,0,0.4); /* Fondo oscuro semi-transparente */
+            padding-top: 15px; /* Espaciado arriba para evitar la barra de navegación */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* Centra verticalmente */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Ancho del contenido */
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            -webkit-box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            -moz-box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            position: relative; /* Para hacer que el botón de cerrar tenga una posición relativa */
+        }
+
+        .close {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logo {
+            color: white; 
+            text-decoration: none; 
+            cursor: pointer; 
+        }
+        .logo:hover, .logo:active, .logo:visited, .logo:focus {
+            color: white; 
+            text-decoration: none; 
+        }
+
+        .history-container {
+            padding: 20px;
+            background-color: #f4f4f4; 
+            min-height: calc(100vh - 40px); /* Adjust the height to take into account the header */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .history-title {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        .user-email {
+            font-size: 20px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .chart-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+	<header class="header">
+        <div class="branding">
+            <div class="menu-icon">
+                <a href="/dashboard" class="menu-icon">
+                    <img src="{{ url_for('static', filename='sources/faviconDefi-blanco.png') }}" alt="Logo de WiseBet">
+                </a>
+            </div>
+            <div class="logo">WiseBet</div>
+            <div class="tagline">Apuestas inteligentes, Ganancias seguras</div>
+        </div>
+        <nav>
+            <a href="/partidos">Partidos</a>
+            <a href="/apostar">Apostar</a>
+            <a href="/historico" class="Historico">Histórico</a>
+            <a href="#"><i class="fas fa-user"></i></a>
+        </nav>
+    </header>
+
+        <div class="history-container">
+            <h1 class="history-title">Historial de Apuestas</h1>
+            <p>Usuario: <span class="user-email">{{ email }}</span></p>
+            <img src="{{ url_for('static', filename='sources/historial.png') }}" alt="Gráfico del Historial de Apuestas" class="chart-image">
+        </div>
+</div>
+<div id="myModal" class="modal">
+    <!-- Contenido del modal -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Usuario: {{ email }}</p>
+        <form action="/cerrar-sesion" method="GET">
+            <button type="submit">Cerrar Sesión</button>
+        </form>
+    </div>
+</div>
+<script>
+    // JavaScript para controlar el modal
+    // Obtiene el modal
+    var modal = document.getElementById("myModal");
+
+    // Obtiene el elemento <span> que cierra el modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // Cuando el usuario hace clic en <span> (x), cierra el modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // Cuando el usuario hace clic en el icono de usuario, muestra el modal
+    document.querySelector('.fas.fa-user').addEventListener('click', function() {
+        event.preventDefault();
+        modal.style.display = "block";
+    });
+
+    // Cuando el usuario hace clic fuera del modal, también cierra el modal
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>

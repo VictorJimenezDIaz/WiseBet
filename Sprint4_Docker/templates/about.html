@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='sources/faviconDefi.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='sources/faviconDefi.png') }}" type="image/x-icon">
+
+    <title>WiseBet - Apuestas Inteligentes, Ganancias seguras</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .header {
+            background-color: #F52FC7;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header .menu-icon {
+            cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+            display: inline-block; /* Allows the div to be clicked */
+            flex-direction: column;
+            justify-content: center;
+            padding: 0px;
+            margin-left: 0px;
+            
+        }
+        .header .menu-icon img {
+            width: 70px; /* o el tamaño deseado */
+            height: auto; /* mantiene la proporción de la imagen */
+            justify-content: center;
+            flex-direction: column;
+        }
+        .header .branding {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .header .logo {
+            margin-left: 76px;
+            font-weight: bold;
+            font-size: 30px;
+            margin-top: -50px;
+        }
+        .header .tagline {
+            font-size: 16px;
+            font-weight: 400;
+            margin-left: 76px;
+            
+        }
+
+        .header nav {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .header nav a:hover {
+            text-decoration: underline;
+        }
+        .header nav .iniciar-sesion {
+            font-weight: 700; /* Bold weight for Roboto */
+            padding: 8px 16px;
+            border: 2px solid white;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+        .header nav .inicia-sesion:hover {
+            background-color: #e600e6; /* Darker shade when hovered */
+        }
+
+        .logo {
+            color: white; 
+            text-decoration: none; 
+            cursor: pointer; 
+        }
+        .logo:hover, .logo:active, .logo:visited, .logo:focus {
+            color: white; 
+            text-decoration: none; 
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="branding">
+            <div class="menu-icon">
+                <a href="/" class="menu-icon">
+                    <img src="{{ url_for('static', filename='sources/faviconDefi-blanco.png') }}" alt="Logo de WiseBet">
+                </a>
+            </div>
+            <a href="/" class="logo">WiseBet</a>
+            <div class="tagline">Apuestas inteligentes, Ganancias seguras</div>
+        </div>
+        <nav>
+            <a href="/precios">Precios</a>
+            <a href="/apis">APIs</a>
+            <a href="/quienes-somos" class="quienes-somos">Quiénes somos</a>
+            <a href="/iniciar-sesion" class="iniciar-sesion">Iniciar Sesión</a>
+        </nav>
+    </header>
+</body>
+</html>
+
+
+
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>about.html</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        p {
+            line-height: 1.6;
+        }
+        .image-container {
+            text-align: center;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+    </style>
+</head>
+<body>
+
+
+<div class="container">
+    <h1>Quiénes Somos</h1>
+    <p>Bienvenido a WiseBet, su fuente confiable de análisis y recomendaciones de apuestas para la emocionante Liga Española de Fútbol. En WiseBet,
+        nos dedicamos apasionadamente a proporcionar a nuestros usuarios información precisa y perspicaz que les permita tomar decisiones informadas y maximizar sus experiencias de apuestas deportivas.
+        Nuestro equipo está formado por tres alumnos del grado de Ingeniería Informática de la Escuela Superior de Informática de Ciudad Real, dedicada al análisis de datos de la Liga de Fútbol Española con el objetivo de proporcionar a nuestros usuarios información precisa y relevante para realizar apuestas deportivas informadas.</p>
+
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='sources/LogoWiseBet.jpeg') }}" alt="WiseBet" width="400" height="400">  </div>
+    <h1>Nuestro objetivo</h1>
+    <p>Nuestro objetivo es ayudar a nuestros usuarios a tomar decisiones informadas al realizar apuestas deportivas, brindándoles la información y el análisis necesario para aumentar sus posibilidades de éxito. Nuestro compromiso es proporcionar a nuestros usuarios recomendaciones de apuestas deportivas precisas y confiables, basadas en un análisis riguroso de los datos y en el uso de técnicas avanzadas de modelado predictivo.</p>
+    <p>Además de nuestro compromiso con la excelencia en el análisis de fútbol y las recomendaciones de apuestas, en WiseBet también nos preocupamos por brindar una experiencia de usuario excepcional. Nuestra plataforma web está diseñada pensando en la comodidad y la facilidad de uso, para que nuestros usuarios puedan acceder rápidamente a la información que necesitan y tomar decisiones con confianza.</p>
+    <p>Nuestro compromiso con la excelencia y la integridad nos impulsa a ofrecer recomendaciones imparciales y fundamentadas, con el objetivo principal de aumentar las probabilidades de éxito de nuestros usuarios.</p>
+    <p>Nos esforzamos por mantener los más altos estándares de profesionalismo y transparencia en todas nuestras operaciones. Cada recomendación de apuesta que proporcionamos está respaldada por un riguroso proceso de evaluación, que incluye el análisis de factores clave como el rendimiento del equipo, las estadísticas de los jugadores, 
+    la forma actual y la historia de enfrentamientos previos.</p>
+    <p>En WiseBet, entendemos la importancia de la responsabilidad en el juego y promovemos prácticas de apuestas responsables entre nuestra comunidad de usuarios. Valoramos la confianza que nuestros usuarios depositan en nosotros y nos esforzamos por mantenerla en todo momento.</p>
+</div>
+</body>
+</html>
+
