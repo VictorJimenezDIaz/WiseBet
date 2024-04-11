@@ -137,6 +137,11 @@ def dashboard():
 
         eventos = dataFixtures
         eventos_con_valor = filtrar_apuestas_con_valor(eventos)
+
+        if user.subscription == 'gratis':
+            eventos_con_valor = eventos_con_valor[:int(len(eventos_con_valor) * 0.30)]
+        elif user.subscription == 'premium':
+            eventos_con_valor = eventos_con_valor[:int(len(eventos_con_valor) * 0.50)]
         
         return render_template('dashboard.html', email=email, standings=standings, dataFixtures=dataFixtures, eventos_con_valor=eventos_con_valor)
 
