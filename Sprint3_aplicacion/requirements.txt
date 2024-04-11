@@ -9,3 +9,7 @@ pytz==2022.1
 requests==2.25.1
 SQLAlchemy==2.0.27
 Werkzeug==3.0.1
+<<<<<<< HEAD
+=======
+
+>>>>>>> f903c93 (Actualizacion de requirements.txt)
