@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='sources/faviconDefi.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='sources/faviconDefi.png') }}" type="image/x-icon">
+    <title>API Info - WiseBet</title>
+    <style>
+        body,html {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            padding: 0;
+            height: 100%;
+            background-color: #f4f4f4;
+        }
+        
+        .header {
+            background-color: #F52FC7;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header .menu-icon {
+            cursor: pointer; /* Changes the cursor to a pointer to indicate it's clickable */
+            display: inline-block; /* Allows the div to be clicked */
+            flex-direction: column;
+            justify-content: center;
+            padding: 0px;
+            margin-left: 0px;
+            
+        }
+        .header .menu-icon img {
+            width: 70px; /* o el tamaño deseado */
+            height: auto; /* mantiene la proporción de la imagen */
+            justify-content: center;
+            flex-direction: column;
+        }
+        .header .branding {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .header .logo {
+            margin-left: 76px;
+            font-weight: bold;
+            font-size: 30px;
+            margin-top: -50px;
+        }
+        .header .tagline {
+            font-size: 16px;
+            font-weight: 400;
+            margin-left: 76px;
+        }
+
+        .header nav {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+        .header nav a:hover {
+            text-decoration: underline;
+        }
+        .header nav .iniciar-sesion {
+            font-weight: 700;
+            padding: 8px 16px;
+            border: 2px solid white;
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+        .api-info-container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .api-info-content {
+            margin-top: 50px;
+        }
+        h1 {
+            color: #F52FC7;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            color: white; 
+            text-decoration: none; 
+            cursor: pointer; 
+        }
+        .logo:hover, .logo:active, .logo:visited, .logo:focus {
+            color: white; 
+            text-decoration: none; 
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="branding">
+            <div class="menu-icon">
+                <a href="/" class="menu-icon">
+                    <img src="{{ url_for('static', filename='sources/faviconDefi-blanco.png') }}" alt="Logo de WiseBet">
+                </a>
+            </div>
+            <a href="/" class="logo">WiseBet</a>
+            <div class="tagline">Apuestas inteligentes, Ganancias seguras</div>
+        </div>
+        <nav>
+            <a href="/precios">Precios</a>
+            <a href="/api_info">APIs</a>
+            <a href="/quienes-somos" class="quienes-somos">Quiénes somos</a>
+            <a href="/iniciar-sesion" class= "iniciar-sesion">Iniciar Sesión</a>
+        </nav>
+    </header>
+
+    <div class="api-info-container">
+        <div class="api-info-content">
+            <h1>Información sobre las APIs</h1>
+            <p>RapidAPI es una plataforma que ofrece una amplia gama de APIs (Application Programming Interfaces) que permiten a los desarrolladores acceder a una variedad de funcionalidades y datos de manera sencilla y eficiente. Aquí tienes información abundante sobre RapidAPI:</p>
+            <h2>¿Qué es RapidAPI?</h2>
+            <p>RapidAPI es una plataforma que actúa como intermediario entre los desarrolladores de aplicaciones y los proveedores de APIs. Proporciona un mercado donde los desarrolladores pueden descubrir, probar y conectarse fácilmente a una gran cantidad de APIs de terceros para integrar en sus aplicaciones.</p>
+            <h2>Características Principales:</h2>
+            <ul>
+                <li><strong>Marketplace de APIs:</strong> RapidAPI cuenta con un extenso marketplace que ofrece más de 10,000 APIs de diferentes categorías, como datos, inteligencia artificial, pagos, redes sociales, entre otros.</li>
+                <li><strong>Descubrimiento Simplificado:</strong> Los desarrolladores pueden explorar y descubrir APIs utilizando filtros basados en categorías, popularidad, calificaciones y más.</li>
+                <li><strong>Pruebas y Documentación:</strong> RapidAPI proporciona herramientas para probar las APIs directamente desde su plataforma y acceder a documentación detallada para facilitar la integración.</li>
+                <li><strong>Autenticación Unificada:</strong> Simplifica el proceso de autenticación para acceder a múltiples APIs mediante la integración de un sistema de autenticación unificado.</li>
+                <li><strong>Gestión de Facturación:</strong> Permite gestionar fácilmente el uso de APIs y realizar un seguimiento del consumo, así como facilitar el proceso de facturación.</li>
+                <li><strong>Soporte Técnico:</strong> RapidAPI ofrece soporte técnico para ayudar a los desarrolladores en caso de problemas o consultas relacionadas con las APIs.</li>
+            </ul>
+            <h2>Ventajas de Usar RapidAPI:</h2>
+            <ul>
+                <li>Variedad de APIs: Proporciona acceso a una amplia gama de APIs de diferentes proveedores, lo que permite a los desarrolladores encontrar soluciones para casi cualquier necesidad.</li>
+                <li>Facilidad de Integración: RapidAPI simplifica el proceso de integración de APIs al proporcionar una interfaz unificada y herramientas de desarrollo.</li>
+                <li>Documentación Detallada: Cada API en RapidAPI está acompañada de una documentación detallada que ayuda a los desarrolladores a comprender su funcionamiento y a utilizarla de manera efectiva.</li>
+                <li>Pruebas Integradas: Los desarrolladores pueden probar las APIs directamente desde la plataforma de RapidAPI antes de integrarlas en sus aplicaciones, lo que ayuda a garantizar su funcionamiento correcto.</li>
+                <li>Seguridad y Fiabilidad: RapidAPI verifica la calidad y seguridad de las APIs antes de incluirlas en su marketplace, lo que garantiza que los desarrolladores puedan confiar en ellas para sus aplicaciones.</li>
+            </ul>
+            <h2>Casos de Uso Comunes:</h2>
+            <ul>
+                <li>Integración de Datos: Los desarrolladores pueden utilizar APIs de RapidAPI para acceder a datos en tiempo real, como información meteorológica, datos financieros, estadísticas deportivas, etc., para integrarlos en sus aplicaciones.</li>
+                <li>Inteligencia Artificial: RapidAPI ofrece APIs para servicios de inteligencia artificial, como reconocimiento facial, procesamiento de lenguaje natural, generación de texto, entre otros, que pueden ser utilizados en aplicaciones de diversas industrias.</li>
+                <li>Pagos y Finanzas: Los desarrolladores pueden utilizar APIs de RapidAPI para integrar funcionalidades de pagos en línea, procesamiento de transacciones financieras, análisis de riesgos, etc., en sus aplicaciones.</li>
+            </ul>
+            <p>RapidAPI es una plataforma poderosa y versátil que ofrece a los desarrolladores acceso a una gran cantidad de APIs de terceros para enriquecer y mejorar sus aplicaciones. Su amplio marketplace, herramientas de desarrollo y soporte técnico hacen que sea una opción atractiva para integrar funcionalidades avanzadas en aplicaciones web y móviles.</p>
+            <h1>Información sobre The Odds API</h1>
+            <p>The Odds API es una poderosa herramienta que proporciona datos en tiempo real sobre las cuotas de apuestas deportivas. Aquí tienes información sobre The Odds API:</p>
+            <h2>¿Qué es The Odds API?</h2>
+            <p>The Odds API es una API que ofrece datos actualizados sobre las cuotas de apuestas deportivas de una amplia gama de eventos deportivos en todo el mundo.</p>
+            <h2>Características Principales:</h2>
+            <ul>
+                <li><strong>Datos en Tiempo Real:</strong> The Odds API proporciona datos actualizados en tiempo real sobre las cuotas de apuestas deportivas para una amplia variedad de eventos deportivos, incluyendo fútbol, baloncesto, tenis, etc.</li>
+                <li><strong>Amplia Cobertura:</strong> La API cubre una amplia gama de eventos deportivos de diferentes ligas y competiciones en todo el mundo, lo que permite a los desarrolladores acceder a datos relevantes para sus aplicaciones.</li>
+                <li><strong>Fácil Integración:</strong> The Odds API ofrece una interfaz sencilla y documentación detallada que facilita la integración en aplicaciones web y móviles.</li>
+                <li><strong>Personalización:</strong> Los desarrolladores pueden personalizar las consultas para obtener datos específicos sobre eventos deportivos, ligas, tipos de apuestas, etc.</li>
+                <li><strong>Actualizaciones Constantes:</strong> La API se actualiza constantemente para proporcionar datos precisos y actualizados a los desarrolladores.</li>
+                <li><strong>Soporte Técnico:</strong> The Odds API ofrece soporte técnico para ayudar a los desarrolladores en caso de problemas o consultas relacionadas con la integración.</li>
+            </ul>
+            <h2>Ventajas de Usar The Odds API:</h2>
+            <ul>
+                <li>Acceso a Datos en Tiempo Real: Proporciona datos actualizados en tiempo real sobre las cuotas de apuestas deportivas, lo que permite a los desarrolladores ofrecer información actualizada a los usuarios de sus aplicaciones.</li>
+                <li>Amplia Cobertura: Cubre una amplia variedad de eventos deportivos y competiciones de todo el mundo, lo que garantiza que los desarrolladores puedan acceder a datos relevantes para sus aplicaciones.</li>
+                <li>Fácil Integración: Ofrece una interfaz sencilla y documentación detallada que facilita la integración en aplicaciones web y móviles.</li>
+                <li>Personalización: Permite a los desarrolladores personalizar las consultas para obtener datos específicos según sus necesidades.</li>
+                <li>Actualizaciones Constantes: Se actualiza regularmente para proporcionar datos precisos y actualizados a los desarrolladores.</li>
+            </ul>
+            <p>Con The Odds API, los desarrolladores pueden obtener fácilmente datos actualizados sobre las cuotas de apuestas deportivas para integrar en sus aplicaciones y ofrecer a los usuarios una experiencia de apuestas más completa y actualizada.</p>
+        </div>
+    </div>
+</body>
+</html>
